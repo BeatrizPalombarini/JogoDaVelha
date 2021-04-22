@@ -14,10 +14,15 @@ public class JogoDaVelha {
 	private boolean rodando = false;
 	private boolean preenchido = false;
 
+	// Função falar
+	public void falar(String texto) {
+		falar(texto);
+	}
+
 	// Boas Vindas
 	public void boasVindas() {
-		System.out.println("Bem vindo ao Jogo da Velha!");
-		System.out.println("Para jogar são necessários dois jogadores!");
+		falar("Bem vindo ao Jogo da Velha!");
+		falar("Para jogar são necessários dois jogadores!");
 	}
 
 	// Inicializar o jogo
@@ -25,14 +30,19 @@ public class JogoDaVelha {
 		rodando = true;
 	}
 
+	// Get rodando
+	public boolean getRodando() {
+		return rodando;
+	}
+
 	// Set jogadores
 	public void jogadores() {
-		System.out.println("Por favor insira o nome do jogador 1:");
+		falar("Por favor insira o nome do jogador 1:");
 		jogador_1 = entrada.next();
-		System.out.println("Por favor insira o nome do jogador 2:");
+		falar("Por favor insira o nome do jogador 2:");
 		jogador_2 = entrada.next();
-		System.out.println("Jogador 1: " + jogador_1);
-		System.out.println("Jogador 2: " + jogador_2);
+		falar("Jogador 1: " + jogador_1);
+		falar("Jogador 2: " + jogador_2);
 	}
 
 	// Preencher Tabuleiro
@@ -53,20 +63,24 @@ public class JogoDaVelha {
 		}
 
 		for (int i = 0; i <= 2; i++) {
-			System.out.println(tabuleiro[0][i] + " " + tabuleiro[1][i] + " " + tabuleiro[2][i]);
+			falar(tabuleiro[0][i] + " " + tabuleiro[1][i] + " " + tabuleiro[2][i]);
 		}
 
 	}
 
 	// Escolher quem começa
 	public void escolherVez() {
-		String escolha;
+		String escolha = "";
 
-		System.out.println("Por favor selecione o primeiro a jogar (1 ou 2): ");
-		escolha = entrada.next();
+		while (escolha.equals("1") == false && escolha.equals("2") == false) {
+			falar("Por favor selecione o primeiro a jogar (1 ou 2): ");
+			escolha = entrada.next();
+			try {
+				vez = Integer.parseInt(escolha);
+			} catch (Exception e) {
 
-		if(escolha == "1" || escolha == "2") {
-			vez = Integer.parseInt(escolha);
+			}
+
 		}
 	}
 
@@ -74,56 +88,86 @@ public class JogoDaVelha {
 	public void mostrarJogador() {
 		switch (vez) {
 		case 1:
-			System.out.println("Vez do jogador " + jogador_1);
+			falar("Vez do jogador " + jogador_1);
 			break;
 		case 2:
-			System.out.println("Vez do jogador " + jogador_2);
+			falar("Vez do jogador " + jogador_2);
 			break;
 		default:
-			System.out.println("ERRO");
+			falar("ERRO");
 		}
 	}
 
 	// Set Marcador
 	public void setMarcadores() {
-		String escolha;
+		String escolha = "";
 
-		System.out.println("Por favor escolha X ou O para o jogador 1:");
-		escolha = entrada.next();
-
-		if (escolha != "X" && escolha != "O") {
-			return;
+		while (escolha.equals("X") == false && escolha.equals("O") == false) {
+			falar("Por favor escolha X ou O para o jogador 1:");
+			escolha = entrada.next();
 		}
 
 		marcador_j1 = escolha;
-		if (marcador_j1 == "X") {
+		if (marcador_j1.equals("X")) {
 			marcador_j2 = "O";
 		} else {
+			marcador_j1 = "O";
 			marcador_j2 = "X";
 		}
 	}
 
 	// Inserir Jogada
-	public void jogar(int linha, int coluna) {
+	public void jogar() {
 
 		if (preenchido == false) {
 			return;
 		}
+		int linha = 0;
+		int coluna = 0;
 
-		switch (vez) {
-
-		case 1:
-			tabuleiro[coluna - 1][linha - 1] = marcador_j1;
-			break;
-
-		case 2:
-			tabuleiro[coluna - 1][linha - 1] = marcador_j2;
-			break;
-
-		default:
-			System.out.println("ERRO");
-
+		while (coluna != 1 && coluna != 2 && coluna != 3) {
+			falar("Por favor insira a coluna:");
+			coluna = entrada.nextInt();
+		}
+		while (linha != 1 && linha != 2 && linha != 3) {
+			falar("Por favor insira a linha:");
+			linha = entrada.nextInt();
 		}
 
+		while (tabuleiro[coluna - 1][linha - 1] != "#") {
+			falar("Campo já preenchido.");
+			falar("Por favor insira os dados novamente.");
+
+			coluna = linha = 0;
+
+			while (coluna != 1 && coluna != 2 && coluna != 3) {
+				falar("Por favor insira a coluna:");
+				coluna = entrada.nextInt();
+			}
+			while (linha != 1 && linha != 2 && linha != 3) {
+				falar("Por favor insira a linha:");
+				linha = entrada.nextInt();
+			}
+		}
+
+		switch (vez) {
+			case 1:
+				tabuleiro[coluna - 1][linha - 1] = marcador_j1;
+				vez = 2;
+				break;
+	
+			case 2:
+				tabuleiro[coluna - 1][linha - 1] = marcador_j2;
+				vez = 1;
+				break;
+	
+			default:
+				falar("ERRO");
+		}
+	}
+
+	//Função verificar tabuleiro e se há vencedores
+	public int verificarVencedores() {
+		return 0;
 	}
 }

@@ -9,10 +9,12 @@ public class principal {
 		jogo.jogadores();
 		jogo.escolherVez();
 		jogo.setMarcadores();
-		jogo.mostrar_Tabuleiro();
-		jogo.mostrarJogador();
-		
-		
+
+		while (jogo.getRodando() == true) {
+			jogo.mostrar_Tabuleiro();
+			jogo.mostrarJogador();
+			jogo.jogar();
+		}
 
 	}
 
