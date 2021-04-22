@@ -68,7 +68,6 @@ public class JogoDaVelha {
 		if(escolha == "1" || escolha == "2") {
 			vez = Integer.parseInt(escolha);
 		}
-	
 	}
 
 	// Mostrar Vez
