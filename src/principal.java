@@ -14,6 +14,7 @@ public class principal {
 			jogo.mostrar_Tabuleiro();
 			jogo.mostrarJogador();
 			jogo.jogar();
+			
 		}
 
 	}
