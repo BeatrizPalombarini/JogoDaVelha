@@ -154,20 +154,14 @@ public class JogoDaVelha {
 		switch (vez) {
 		case 1:
 			tabuleiro[coluna - 1][linha - 1] = marcador_j1;
-			if (verificarJogo() == 1) {
-				rodando = false;
-			} else {
-				vez = 2;
-			}
+			verificarJogo();
+			vez = 2;
 			break;
 
 		case 2:
 			tabuleiro[coluna - 1][linha - 1] = marcador_j2;
-			if (verificarJogo() == 1) {
-				rodando = false;
-			} else {
-				vez = 2;
-			}
+			verificarJogo();
+			vez = 1;
 			break;
 
 		default:
@@ -177,15 +171,11 @@ public class JogoDaVelha {
 	}
 
 	// Função verificar tabuleiro e se há vencedores
-	public int verificarJogo() {
+	public void verificarJogo() {
 
 		int quemGanhou = 0;
-		int jogador_1 = 0;
-		int jogador_2 = 0;
-		int empate = 0;
-		int continuar = 0;
 
-		// Verifical horizontal
+		// Verificar horizontal
 		for (int i = 0; i < 3; i++) {
 			if (tabuleiro[0][i].equals("X") && tabuleiro[1][i].equals("X") && tabuleiro[2][i].equals("X")) {
 				quemGanhou = vez;
@@ -195,7 +185,7 @@ public class JogoDaVelha {
 			}
 		}
 
-		// Verifical Vertical
+		// Verificar Vertical
 		for (int i = 0; i < 3; i++) {
 			if (tabuleiro[i][0].equals("X") && tabuleiro[i][1].equals("X") && tabuleiro[i][2].equals("X")) {
 				quemGanhou = vez;
@@ -205,7 +195,7 @@ public class JogoDaVelha {
 			}
 		}
 
-		// Verifical Vertical
+		// Verificar Diagonal
 		if (tabuleiro[0][0].equals("X") && tabuleiro[1][1].equals("X") && tabuleiro[2][2].equals("X")) {
 			quemGanhou = vez;
 		}
@@ -219,27 +209,68 @@ public class JogoDaVelha {
 			quemGanhou = vez;
 		}
 
-		switch (quemGanhou) {
-		case 1:
-			quemGanhou = jogador_1;
-			break;
+		// Verificar empate
 
-		case 2:
-			quemGanhou = jogador_2;
-			break;
-			
-		case 3:
-			quemGanhou = empate;
-			break;
-
-		case 4:
-			quemGanhou = continuar;
-			break;
-
-		default:
-			falar("ERRO");
-			rodando = false;
+		boolean totalmentePreenchido = true;
+		for (int i = 0; i <= 2; i++) {
+			for (int j = 0; j <= 2; j++) {
+				if (tabuleiro[i][j] == "#") {
+					totalmentePreenchido = false;
+				}
+			}
 		}
-		return quemGanhou;
+
+		if (totalmentePreenchido == true & quemGanhou <= 0) {
+			quemGanhou = 3;
+		}
+
+		switch (quemGanhou) {
+		// Jogador 1 ganhou
+		case 1:
+			System.out.println(jogador_1 + " Ganhou!");
+			mostrar_Tabuleiro();
+			jogarNovamente();
+			break;
+		// Jogador 2 ganhou
+		case 2:
+			System.out.println(jogador_2 + " Ganhou!");
+			mostrar_Tabuleiro();
+			jogarNovamente();
+			break;
+		// Empate
+		case 3:
+			System.out.println("Velha!");
+			mostrar_Tabuleiro();
+			jogarNovamente();
+			break;
+		}
 	}
+
+	public void jogarNovamente() {
+
+	
+		String recebe = ";";
+		
+		while(recebe.equals("Sim") == false && recebe.equals("Não") == false)
+		{
+			falar("Deseja jogar novamente? (Sim/Não)");
+			recebe = entrada.next();
+		}
+		
+			if (recebe.equals("Sim")) {
+				inicializar();
+				jogadores();
+				escolherVez();
+				setMarcadores();
+				preencher_Tabuleiro();
+	
+			}
+			if (recebe.equals("Não")) {
+				rodando = false;
+				falar("Obrigado por jogar!");
+				falar("\n");
+				falar("Desenvolvido por: Beatriz Palombarini");
+			}
+		}
+	
 }
